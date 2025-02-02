@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { createTask } from "@/utils/tasks/serverUtils";
 
 export default function AddTaskPage() {
   const [title, setTitle] = useState("");
@@ -24,14 +25,7 @@ export default function AddTaskPage() {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
     try {
-      const response = await fetch(apiUrl + "/api/tasks", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title, content, task_status, user_id }),
-      });
-
+      const response = await createTask(title, content, task_status, user_id);
       if (response.ok) {
         router.push("/tasks/");
         router.refresh();

@@ -2,48 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
-const getTaskFromId = async (id) => {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  try {
-    const response = await fetch(`${apiUrl}/api/tasks/${id}`, {
-      cache: "no-store",
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch data");
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(error);
-    return { error: error.message };
-  }
-};
-
-const updateTask = async (id, updatedTask) => {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  try {
-    const response = await fetch(`${apiUrl}/api/tasks/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedTask),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to update task");
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(error);
-    return { error: error.message };
-  }
-};
+import { getTaskFromId, updateTask } from "@/utils/tasks/serverUtils";
 
 export default function EditTaskForm({ id }) {
   const router = useRouter();

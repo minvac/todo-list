@@ -2,23 +2,20 @@
 
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { removeTask } from "@/utils/tasks/serverUtils";
 
 export default function RemoveButton({ id }) {
   const router = useRouter();
 
-  const removeTask = async (id) => {
+  const handleRemoveTask = async (id) => {
     const confirm = window.confirm(
       "Are you sure you want to remove this task?"
     );
 
     if (!confirm) return;
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
     try {
-      const response = await fetch(`${apiUrl}/api/tasks?id=${id}`, {
-        method: "DELETE",
-      });
+      const response = await removeTask(id);
 
       if (response.ok) {
         console.info("Task removed:", id);
@@ -36,7 +33,7 @@ export default function RemoveButton({ id }) {
   };
 
   return (
-    <a onClick={() => removeTask(id)} title="Remove task">
+    <a onClick={() => handleRemoveTask(id)} title="Remove task">
       <Trash2 className="text-red-700 hover:bg-slate-100 p-1" size={28} />
     </a>
   );
