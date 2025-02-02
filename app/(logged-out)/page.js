@@ -1,17 +1,32 @@
 "use client";
-
-import Link from "next/link";
-import { useEffect } from 'react';
+import { useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { getUserFromEmail } from '@/utils/auth/serverUtils';
 
 export default function LoggedOutPage() {
 
   const router = useRouter();
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    //auth
-    router.push('/tasks/');
+
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+    console.log(email, password);
+    
+    try {
+      const user = await getUserFromEmail(email);
+      if (user && user.password === password) {
+        router.push('/tasks/');
+      } else {
+        alert('Invalid email or password');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('An error occurred while logging in');
+    }
   };
 
   return (
@@ -31,6 +46,7 @@ export default function LoggedOutPage() {
                 placeholder="john@doe.com"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
                 autoComplete="on"
+                ref={emailRef}
               />
             </div>
             <div>
@@ -41,6 +57,7 @@ export default function LoggedOutPage() {
                 placeholder="••••••••"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
                 autoComplete="off"
+                ref={passwordRef}
               />
             </div>
             <button type="submit" className="px-4 py-2 bg-gray-700 text-white hover:bg-gray-800">Login</button>
