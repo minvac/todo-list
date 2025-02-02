@@ -11,7 +11,7 @@ export async function PUT (request) {
     const { title, content, task_status } = await request.json();
 
     if (!title || !content) {
-      return new Response(JSON.stringify({ error: "Faltan datos" }), { status: 400 });
+      return new Response(JSON.stringify({ error: "Incomplete data" }), { status: 400 });
     }
 
     const task = await Task.findByIdAndUpdate(id, {

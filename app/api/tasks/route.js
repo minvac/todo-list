@@ -11,7 +11,7 @@ export async function POST (request) {
 
 
     if (!title || !content) {
-      return new Response(JSON.stringify({ error: "Faltan datos" }), { status: 400 });
+      return new Response(JSON.stringify({ error: "Incomplete data" }), { status: 400 });
     }
 
     const newTask = new Task({

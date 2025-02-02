@@ -1,3 +1,26 @@
+// CREATE
+export const createUser = async ( name, mail, password) => {
+  console.log("⚠️createUser");
+
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  try {
+    const response = await fetch(apiUrl + "/api/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, mail, password }),
+    });
+
+    return response;
+  } catch (error) {
+    console.error(error);
+    return response
+  }
+
+}
+
 // READ ONE
 export const getUserFromEmail = async (email) => {
   console.log("⚠️getUserFromEmail");
