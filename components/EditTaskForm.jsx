@@ -9,7 +9,7 @@ export default function EditTaskForm() {
       <input
         type="text"
         className="border border-gray-500 px-8 py-2"
-        placeholder="Task Description"
+        placeholder="Task Content"
       />
 
       <button className="font-bold  text-white bg-green-600 py-3 px-6 w-fit">

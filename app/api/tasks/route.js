@@ -6,6 +6,8 @@ export async function POST (request) {
 
   try {
     const { title, content, task_status } = await request.json();
+    console.info("Catching data:", { title, content, task_status });
+
 
     if (!title || !content) {
       return new Response(JSON.stringify({ error: "Faltan datos" }), { status: 400 });

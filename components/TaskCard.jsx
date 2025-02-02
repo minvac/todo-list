@@ -3,7 +3,7 @@ import { Pencil, CalendarClock } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
 
-export default function TaskCard({ id, task }) {
+export default function TaskCard({ task }) {
   const formattedDateTime = format(
     new Date(
       task.createdAt === task.updatedAt ? task.createdAt : task.updatedAt
@@ -19,8 +19,8 @@ export default function TaskCard({ id, task }) {
       </div>
 
       <div className="flex gap-1 items-center">
-        <RemoveButton />
-        <Link href={`/editTask/${id}`} title="Edit task">
+        <RemoveButton id={task._id} />
+        <Link href={`/editTask/${task._id}`} title="Edit task">
           <Pencil className="hover:bg-slate-100 p-1" size={28} />
         </Link>
       </div>
