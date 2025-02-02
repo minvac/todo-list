@@ -1,46 +1,42 @@
 import connectMongoDB from "@/libs/mongodb";
 import { Task } from "@/models/Task";
 
-export async function POST (request) {
+export async function PUT (request) {
   await connectMongoDB();
 
   try {
+    const url = new URL(request.url);
+    const id = url.pathname.split('/').pop();
     const { title, comment, task_status } = await request.json();
 
     if (!title || !comment) {
       return new Response(JSON.stringify({ error: "Faltan datos" }), { status: 400 });
     }
 
-    const newTask = new Task({
+    const task = await Task.findByIdAndUpdate(id, {
       title,
       comment,
       task_status
-    });
+    }, { new: true });
 
-    await newTask.save();
-    return new Response(JSON.stringify(newTask), { status: 201 });
+    if (!task) {
+      return new Response(JSON.stringify({ error: "Task not found" }), { status: 404 });
+    }
+
+    return new Response(JSON.stringify(task), { status: 200 });
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 }
 
-export async function GET () {
+export async function GET (request) {
   await connectMongoDB();
 
   try {
-    const tasks = await Task.find();
-    return new Response(JSON.stringify(tasks), { status: 200 });
-  } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
-  }
-}
+    const url = new URL(request.url);
+    const id = url.pathname.split('/').pop();
 
-export async function DELETE (request) {
-  await connectMongoDB();
-
-  try {
-    // const { id } = request.params;
-    const task = await Task.findByIdAndDelete("679ecee1e9c54106f8cd1f68");
+    const task = await Task.findById(id);
 
     if (!task) {
       return new Response(JSON.stringify({ error: "Task not found" }), { status: 404 });
