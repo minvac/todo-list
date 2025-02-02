@@ -5,15 +5,15 @@ export async function POST (request) {
   await connectMongoDB();
 
   try {
-    const { title, comment, task_status } = await request.json();
+    const { title, content, task_status } = await request.json();
 
-    if (!title || !comment) {
+    if (!title || !content) {
       return new Response(JSON.stringify({ error: "Faltan datos" }), { status: 400 });
     }
 
     const newTask = new Task({
       title,
-      comment,
+      content,
       task_status
     });
 
@@ -37,10 +37,18 @@ export async function GET () {
 
 export async function DELETE (request) {
   await connectMongoDB();
+  console.log(request);
+  
 
   try {
-    // const { id } = request.params;
-    const task = await Task.findByIdAndDelete("679ecee1e9c54106f8cd1f68");
+    const url = new URL(request.url);
+    const id = url.searchParams.get('id');
+
+    if (!id) {
+      return new Response(JSON.stringify({ error: "ID is missing from the query parameters" }), { status: 400 });
+    }
+
+    const task = await Task.findByIdAndDelete(id);
 
     if (!task) {
       return new Response(JSON.stringify({ error: "Task not found" }), { status: 404 });

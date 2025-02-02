@@ -7,15 +7,15 @@ export async function PUT (request) {
   try {
     const url = new URL(request.url);
     const id = url.pathname.split('/').pop();
-    const { title, comment, task_status } = await request.json();
+    const { title, content, task_status } = await request.json();
 
-    if (!title || !comment) {
+    if (!title || !content) {
       return new Response(JSON.stringify({ error: "Faltan datos" }), { status: 400 });
     }
 
     const task = await Task.findByIdAndUpdate(id, {
       title,
-      comment,
+      content,
       task_status
     }, { new: true });
 
