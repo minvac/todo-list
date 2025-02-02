@@ -13,8 +13,10 @@ export default function RemoveButton({ id }) {
 
     if (!confirm) return;
 
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
     try {
-      const response = await fetch(`http://localhost:3000/api/tasks?id=${id}`, {
+      const response = await fetch(`${apiUrl}/api/tasks?id=${id}`, {
         method: "DELETE",
       });
 

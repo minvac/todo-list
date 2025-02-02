@@ -7,6 +7,7 @@ export default function AddTaskPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const task_status = false;
+  const user_id = 1;
 
   const router = useRouter();
 
@@ -18,15 +19,17 @@ export default function AddTaskPage() {
       return;
     }
 
-    console.info("Sending data:", { title, content, task_status });
+    console.info("Sending data:", { title, content, task_status, user_id });
+
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
     try {
-      const response = await fetch("http://localhost:3000/api/tasks", {
+      const response = await fetch(apiUrl + "/api/tasks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, content, task_status }),
+        body: JSON.stringify({ title, content, task_status, user_id }),
       });
 
       if (response.ok) {

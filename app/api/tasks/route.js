@@ -1,12 +1,13 @@
 import connectMongoDB from "@/libs/mongodb";
 import { Task } from "@/models/Task";
 
+// CREATE
 export async function POST (request) {
   await connectMongoDB();
 
   try {
-    const { title, content, task_status } = await request.json();
-    console.info("Catching data:", { title, content, task_status });
+    const { title, content, task_status, user_id } = await request.json();
+    console.info("Catching data:", { title, content, task_status, user_id });
 
 
     if (!title || !content) {
@@ -16,7 +17,8 @@ export async function POST (request) {
     const newTask = new Task({
       title,
       content,
-      task_status
+      task_status,
+      user_id
     });
 
     await newTask.save();
@@ -26,6 +28,7 @@ export async function POST (request) {
   }
 }
 
+// READ ALL
 export async function GET () {
   await connectMongoDB();
 
@@ -37,6 +40,7 @@ export async function GET () {
   }
 }
 
+// DELETE
 export async function DELETE (request) {
   await connectMongoDB();
   console.log(request);

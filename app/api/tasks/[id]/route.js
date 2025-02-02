@@ -1,6 +1,7 @@
 import connectMongoDB from "@/libs/mongodb";
 import { Task } from "@/models/Task";
 
+// UPDATE
 export async function PUT (request) {
   await connectMongoDB();
 
@@ -29,6 +30,7 @@ export async function PUT (request) {
   }
 }
 
+// READ ONE
 export async function GET (request) {
   await connectMongoDB();
 

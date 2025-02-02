@@ -1,8 +1,10 @@
 import TaskCard from "@/components/TaskCard";
 
 const getTasks = async () => {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
   try {
-    const response = await fetch("http://localhost:3000/api/tasks", {
+    const response = await fetch(apiUrl + "/api/tasks", {
       cache: "no-store",
     });
 
