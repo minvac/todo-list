@@ -25,7 +25,7 @@ export default async function TasksList() {
   return (
     <div>
       {tasks.map((task) => (
-        <TaskCard key={task.id} task={task} />
+        <TaskCard key={task._id} task={task} />
       ))}
     </div>
   );
