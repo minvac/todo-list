@@ -2,6 +2,7 @@
 import { useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { getUserFromEmail } from '@/utils/auth/serverUtils';
+import { signIn } from 'next-auth/react';
 
 export default function LoggedOutPage() {
 
@@ -19,6 +20,11 @@ export default function LoggedOutPage() {
     try {
       const user = await getUserFromEmail(email);
       if (user && user.password === password) {
+          signIn('credentials', {
+            email: email,
+            password: password,
+            redirect: false,
+          });
         router.push('/tasks/');
       } else {
         alert('Invalid email or password');
