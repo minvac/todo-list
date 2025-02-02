@@ -67,7 +67,7 @@ export default function EditTaskForm({ id }) {
     e.preventDefault();
     const updatedTask = await updateTask(id, task);
     console.log("Updated task: ", updatedTask);
-    router.push("/");
+    router.push("/tasks/");
     router.refresh();
   };
 

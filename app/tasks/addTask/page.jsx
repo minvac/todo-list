@@ -33,7 +33,7 @@ export default function AddTaskPage() {
       });
 
       if (response.ok) {
-        router.push("/");
+        router.push("/tasks/");
         router.refresh();
       } else {
         alert("Failed to add task");

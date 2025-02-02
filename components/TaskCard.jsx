@@ -38,7 +38,7 @@ export default function TaskCard({ task }) {
 
       <div className="flex gap-1 items-center">
         <RemoveButton id={task._id} />
-        <Link href={`/editTask/${task._id}`} title="Edit task">
+        <Link href={`/tasks/editTask/${task._id}`} title="Edit task">
           <Pencil className="hover:bg-slate-100 p-1" size={28} />
         </Link>
       </div>
