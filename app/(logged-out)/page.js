@@ -20,12 +20,16 @@ export default function LoggedOutPage() {
     try {
       const user = await getUserFromEmail(email);
       if (user && user.password === password) {
-          signIn('credentials', {
-            email: email,
-            password: password,
-            redirect: false,
-          });
-        router.push('/tasks/');
+        const result = await signIn('credentials', {
+          email: email,
+          password: password,
+          redirect: false,
+        });
+        if (result.ok) {
+          router.push('/tasks/');
+        } else {
+          alert('Invalid email or password');
+        }
       } else {
         alert('Invalid email or password');
       }
