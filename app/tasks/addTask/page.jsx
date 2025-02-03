@@ -3,12 +3,15 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createTask } from "@/utils/tasks/serverUtils";
+import { useUser } from "@/context/UserContext";
 
 export default function AddTaskPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const { user } = useUser();
+
   const task_status = false;
-  const user_id = "679fdc62fd60a838e6be6905";
+  const user_id = user._id;
 
   const router = useRouter();
 
