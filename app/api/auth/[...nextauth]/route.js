@@ -23,10 +23,6 @@ const authOptions = {
 
           if (!user) return null;
 
-          // const { hashSync } = require("bcryptjs");
-          // const newPassword = hashSync(user.password, 10);
-          // console.log("🔑* newPassword :", newPassword);
-
           const isValid = compareSync(credentials.password, user.password);
           console.log("isValid :", isValid);
           if (!isValid) return null;

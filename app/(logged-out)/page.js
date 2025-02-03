@@ -2,11 +2,14 @@
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { getUserFromEmail } from "@/utils/auth/serverUtils";
+import { useUser } from "@/context/UserContext";
 
 export default function LoggedOutPage() {
   const router = useRouter();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const { setUser } = useUser();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -17,7 +20,17 @@ export default function LoggedOutPage() {
       password: passwordRef.current.value,
     });
 
-    result?.error ? alert("Invalid credentials") : router.push("/tasks");
+    if (result?.error) {
+      alert("Invalid credentials");
+    } else {
+      const userData = await getUserFromEmail(emailRef.current.value);
+      if (!userData.error) {
+        setUser(userData);
+        router.push("/tasks");
+      } else {
+        alert("Failed to fetch user data");
+      }
+    }
   };
 
   return (
