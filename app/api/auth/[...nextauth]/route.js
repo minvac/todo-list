@@ -1,15 +1,38 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
-
+import connectMongoDB from "@/libs/mongodb";
+import mongoose from "mongoose";
+import { compareSync } from "bcryptjs";
 
 const authOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
-      credentials: {},
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" }
+      },
       async authorize(credentials) {
-        const user = { id: "1"};
-        return user;
+        try {
+          await connectMongoDB();
+          const user = await mongoose.connection.db.collection("users").findOne({
+            mail: credentials.email
+          });
+
+          if (!user) return null;
+          
+          const isValid = compareSync(credentials.password, user.password);
+          if (!isValid) return null;
+
+          return {
+            id: user._id.toString(),
+            name: user.name,
+            email: user.mail
+          };
+        } catch (error) {
+          console.error("Authentication error:", error);
+          return null;
+        }
       },
     }),
   ],

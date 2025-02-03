@@ -1,7 +1,6 @@
 "use client";
 import { useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { getUserFromEmail } from '@/utils/auth/serverUtils';
 import { signIn } from 'next-auth/react';
 
 export default function LoggedOutPage() {
@@ -12,31 +11,16 @@ export default function LoggedOutPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const email = emailRef.current.value;
-    const password = passwordRef.current.value;
-    console.log(email, password);
     
-    try {
-      const user = await getUserFromEmail(email);
-      if (user && user.password === password) {
-        const result = await signIn('credentials', {
-          email: email,
-          password: password,
-          redirect: false,
-        });
-        if (result.ok) {
-          router.push('/tasks/');
-        } else {
-          alert('Invalid email or password');
-        }
-      } else {
-        alert('Invalid email or password');
-      }
-    } catch (error) {
-      console.error(error);
-      alert('An error occurred while logging in');
-    }
+    const result = await signIn('credentials', {
+      redirect: false,
+      email: emailRef.current.value,
+      password: passwordRef.current.value
+    });
+  
+    result?.error 
+      ? alert('Invalid credentials') 
+      : router.push('/tasks');
   };
 
   return (
