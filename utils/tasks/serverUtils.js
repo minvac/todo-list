@@ -1,5 +1,5 @@
 // CREATE
-export const createTask = async ( title, content, task_status, user_id) => {
+export const createTask = async (title, content, task_status, user_id) => {
   console.log("⚠️createTask");
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -16,19 +16,18 @@ export const createTask = async ( title, content, task_status, user_id) => {
     return response;
   } catch (error) {
     console.error(error);
-    return response
+    return response;
   }
+};
 
-}
-
-// READ ALL
-export const getAllTasks = async () => {
+// READ ALL BY USER
+export const getAllTasks = async (userId) => {
   console.log("⚠️getAllTasks");
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   try {
-    const response = await fetch(apiUrl + "/api/tasks", {
+    const response = await fetch(`${apiUrl}/api/tasks?userId=${userId}`, {
       cache: "no-store",
     });
 
@@ -58,7 +57,7 @@ export const removeTask = async (id) => {
     console.error(error);
     return response;
   }
-}
+};
 // UPDATE
 export const updateTask = async (id, task) => {
   console.log("⚠️updateTask");
@@ -87,7 +86,7 @@ export const updateTask = async (id, task) => {
 // READ ONE
 export const getTaskFromId = async (id) => {
   console.log("⚠️getTaskFromId");
-  
+
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   try {
     const response = await fetch(`${apiUrl}/api/tasks/${id}`, {

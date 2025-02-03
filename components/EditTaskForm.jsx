@@ -6,7 +6,7 @@ import { getTaskFromId, updateTask } from "@/utils/tasks/serverUtils";
 
 export default function EditTaskForm({ id }) {
   const router = useRouter();
-
+  const [loading, setLoading] = useState(true);
   const [task, setTask] = useState({
     title: "",
     content: "",
@@ -17,6 +17,7 @@ export default function EditTaskForm({ id }) {
     const fetchTask = async () => {
       const fetchedTask = await getTaskFromId(id);
       setTask(fetchedTask);
+      setLoading(false);
     };
 
     fetchTask();
@@ -29,6 +30,10 @@ export default function EditTaskForm({ id }) {
     router.push("/tasks/");
     router.refresh();
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -52,7 +57,7 @@ export default function EditTaskForm({ id }) {
           checked={task.task_status}
           onChange={(e) => setTask({ ...task, task_status: e.target.checked })}
         />
-        Completed
+        {task.task_status ? "Completed" : "Pending"}
       </label>
       <button
         type="submit"

@@ -1,5 +1,5 @@
 // CREATE
-export const createUser = async ( name, mail, password) => {
+export const createUser = async (name, mail, password) => {
   console.log("⚠️createUser");
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -16,12 +16,11 @@ export const createUser = async ( name, mail, password) => {
     return response;
   } catch (error) {
     console.error(error);
-    return response
+    return response;
   }
+};
 
-}
-
-// READ ONE
+// READ ONE BY EMAIL
 export const getUserFromEmail = async (email) => {
   console.log("⚠️getUserFromEmail");
 

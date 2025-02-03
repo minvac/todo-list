@@ -8,7 +8,7 @@ export default function AddTaskPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const task_status = false;
-  const user_id = 1;
+  const user_id = "679fdc62fd60a838e6be6905";
 
   const router = useRouter();
 

@@ -4,7 +4,7 @@ import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { removeTask } from "@/utils/tasks/serverUtils";
 
-export default function RemoveButton({ id }) {
+export default function RemoveButton({ id, onTaskRemoved }) {
   const router = useRouter();
 
   const handleRemoveTask = async (id) => {
@@ -19,6 +19,7 @@ export default function RemoveButton({ id }) {
 
       if (response.ok) {
         console.info("Task removed:", id);
+        onTaskRemoved(id);
         router.refresh();
       } else {
         alert("Failed to remove task");

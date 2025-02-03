@@ -1,26 +1,32 @@
 "use client";
-import { useRef } from 'react';
-import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react';
+import { useRef } from "react";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useUser } from "@/context/UserContext";
 
 export default function LoggedOutPage() {
-
   const router = useRouter();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const { setUser } = useUser();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
-    const result = await signIn('credentials', {
+
+    const result = await signIn("credentials", {
       redirect: false,
       email: emailRef.current.value,
-      password: passwordRef.current.value
+      password: passwordRef.current.value,
     });
-  
-    result?.error 
-      ? alert('Invalid credentials') 
-      : router.push('/tasks');
+
+    if (result?.error) {
+      alert("Invalid credentials");
+    } else {
+      const response = await fetch(`/api/users?mail=${emailRef.current.value}`);
+      const user = await response.json();
+      setUser(user);
+      router.push("/tasks");
+    }
   };
 
   return (
@@ -33,7 +39,12 @@ export default function LoggedOutPage() {
         <div className="p-4">
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email
+              </label>
               <input
                 id="email"
                 type="email"
@@ -44,7 +55,12 @@ export default function LoggedOutPage() {
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password
+              </label>
               <input
                 id="password"
                 type="password"
@@ -54,7 +70,12 @@ export default function LoggedOutPage() {
                 ref={passwordRef}
               />
             </div>
-            <button type="submit" className="px-4 py-2 bg-gray-700 text-white hover:bg-gray-800">Login</button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-gray-700 text-white hover:bg-gray-800"
+            >
+              Login
+            </button>
           </form>
         </div>
       </div>
